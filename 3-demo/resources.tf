@@ -49,11 +49,12 @@ module "loadbalancer" {
   }
 }
 
-module "computegroup" {
-    source              = "Azure/computegroup/azurerm"
+module "vmss" {
+    source              = "Azure/vmss-cloudinit/azurerm"
     resource_group_name = "${local.resource_group}"
     location            = "${var.arm_region}"
-    vm_size             = "Standard_A0"
+    cloudconfig_file    = "${path.root}/cloudconfig.tpl"
+    vm_size             = "Standard_DS2_v2"
     admin_username      = "azureuser"
     admin_password      = "ComplexPassword"
     ssh_key             = "~/.ssh/nbellavancePublic.pem"
@@ -61,7 +62,6 @@ module "computegroup" {
     vm_os_simple        = "UbuntuServer"
     vnet_subnet_id      = "${data.terraform_remote_state.2-demo.subnet_1}"
     load_balancer_backend_address_pool_ids = "${module.loadbalancer.azurerm_lb_backend_address_pool_id}"
-    cmd_extension       = "sudo apt-get -y install nginx"
     tags                = {
                             environment = "dev"
                             costcenter  = "it"

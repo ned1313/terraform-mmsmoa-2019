@@ -1,19 +1,17 @@
 pipeline {
     agent any
     tools {
-        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform-0.11.10"
+        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform-0.11.13"
     }
     parameters {
         string(name: 'WORKSPACE', defaultValue: 'development', description:'worspace to use in Terraform')
     }
     environment {
-        TF_HOME = tool('terraform-0.11.10')
+        TF_HOME = tool('terraform-0.11.13')
         TF_IN_AUTOMATION = "true"
         PATH = "$TF_HOME:$PATH"
         ARM_SUBSCRIPTION_ID = credentials('arm_subscription')
         ARM_TENANT_ID = credentials('arm_tenant_id')
-        ARM_CLIENT_ID = credentials('arm_client_id')
-        ARM_CLIENT_SECRET = credentials('arm_client_secret')
         VAR_FILE_NAME = "terraform.jenkins"
     }
     stages {
@@ -21,7 +19,7 @@ pipeline {
             steps {
                 dir('4-demo'){
                     sh 'terraform --version'
-                    sh "terraform init -backend-config='arm_client_id=$ARM_CLIENT_ID' -backend-config='arm_client_secret=$ARM_CLIENT_SECRET'"
+                    sh "terraform init"
                     sh "echo \$PWD"
                     sh "whoami"
                 }
