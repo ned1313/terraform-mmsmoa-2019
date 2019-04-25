@@ -12,6 +12,7 @@ pipeline {
         PATH = "$TF_HOME:$PATH"
         ARM_SUBSCRIPTION_ID = credentials('arm_subscription')
         ARM_TENANT_ID = credentials('arm_tenant_id')
+        ARM_USE_MSI = "true"
         VAR_FILE_NAME = "terraform.jenkins"
     }
     stages {
