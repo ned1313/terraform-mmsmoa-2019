@@ -62,6 +62,7 @@ resource "azurerm_container_group" "acg" {
     environment_variables {
       "NODE_ENV" = "testing"
     }
+    commands = ["/bin/sh","-c","sed -i 's/Azure Container Instances/MMS MOA 2019/g' /usr/src/app/index.html && node /usr/src/app/index.js"]
   }
 
   tags {
